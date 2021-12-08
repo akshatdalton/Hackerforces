@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import api from "../../api";
 import Problem from "../Problem";
 
 import "./student.css";
@@ -21,6 +22,23 @@ const Student = () => {
             accepted: true,
         },
     ]);
+
+    useEffect(() => {
+        getProblems();
+    }, []);
+
+    const getProblems = async () => {
+        try {
+            const res = await api.get("/api/problems");
+            if (res.status === 200) {
+                setProblems([...res.data]);
+            } else {
+                console.error(`Error: ${res.status}`);
+            }
+        } catch (err) {
+            console.error(err);
+        }
+    };
 
     return (
         <div className="problems-list">
