@@ -1,27 +1,13 @@
 import React, { useEffect, useState } from "react";
 import api from "../../api";
-import Problem from "../Problem";
+import ProblemCard from "../ProblemCard";
 
 import "./student.css";
 
 const Student = () => {
-    const [problems, setProblems] = useState([
-        {
-            id: 1,
-            title: "1st problem",
-            accepted: true,
-        },
-        {
-            id: 2,
-            title: "2nd problem",
-            accepted: false,
-        },
-        {
-            id: 3,
-            title: "3rd problem",
-            accepted: true,
-        },
-    ]);
+    const [problems, setProblems] = useState([]);
+    const [isLoading, setIsLoading] = useState(true);
+    const [error, setError] = useState(null);
 
     useEffect(() => {
         getProblems();
@@ -34,20 +20,29 @@ const Student = () => {
                 setProblems([...res.data]);
             } else {
                 console.error(`Error: ${res.status}`);
+                setError(res);
             }
+            setIsLoading(false);
         } catch (err) {
             console.error(err);
+            setError(err);
         }
     };
+
+    if (isLoading) {
+        return <div>Loading ...</div>;
+    } else if (error !== null) {
+        return <div>Error: {error.message}</div>;
+    }
 
     return (
         <div className="problems-list">
             {problems.map((problem) => (
-                <Problem
+                <ProblemCard
                     key={problem.id}
                     id={problem.id}
-                    title={problem.title}
-                    accepted={problem.accepted}
+                    name={problem.name}
+                    code={problem.code}
                 />
             ))}
         </div>
