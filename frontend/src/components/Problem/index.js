@@ -113,7 +113,7 @@ const Problem = () => {
             </div>
             <div className="testcases">
                 {testcases.map((testcase, idx) => (
-                    <Row key={idx}>
+                    <Row className="testcase-row" key={idx}>
                         <Col sm="6">
                             <Card body>
                                 <CardSubtitle>
