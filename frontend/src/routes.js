@@ -4,6 +4,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Admin from "./components/Admin";
 import Student from "./components/Student";
 import Problem from "./components/Problem";
+import EditPanel from "./components/EditPanel";
 
 const Routers = () => {
     return (
@@ -12,6 +13,7 @@ const Routers = () => {
                 <Route path="/student" element={<Student />} />
                 <Route path="/problems/:id" element={<Problem />} />
                 <Route path="/admin" element={<Admin />} />
+                <Route path="/edit-problem/:id" element={<EditPanel />} />
             </Routes>
         </BrowserRouter>
     );

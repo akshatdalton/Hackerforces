@@ -48,7 +48,6 @@ const Problem = () => {
                 for (let idx = 0; idx < input.length; ++idx) {
                     test_cases.push({ input: input[idx], output: output[idx] });
                 }
-                console.log("testcases = ", test_cases);
                 setTestcases([...test_cases]);
             } else {
                 console.error(`Error: ${res.status}`);
@@ -87,7 +86,6 @@ const Problem = () => {
                 source: sourceCode,
             });
             if (res.status === 200) {
-                console.log("result = ", res.data);
                 setResult(res.data.status.name);
             } else {
                 console.error(`Error: ${res.status}`);

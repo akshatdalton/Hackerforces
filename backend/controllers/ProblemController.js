@@ -132,4 +132,24 @@ module.exports = {
             })
             .catch((err) => res.status(500).json(err));
     },
+
+    updateProblem(req, res) {
+        axios
+            .put(
+                `${process.env.PROBLEM_API}/problems/${req.body.id}?access_token=${process.env.PROBLEM_ACCESS_TOKEN}`,
+                {
+                    name: req.body.name,
+                    body: req.body.body,
+                }
+            )
+            .then(() => {
+                Problem.updateOne(
+                    { id: req.body.id },
+                    { name: req.body.name, body: req.body.body }
+                )
+                    .then(() => res.json())
+                    .catch((err) => res.status(400).json(err));
+            })
+            .catch((err) => res.status(400).json(err));
+    },
 };
