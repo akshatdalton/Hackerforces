@@ -172,7 +172,7 @@ module.exports = {
                         $push: { testcases: response.data },
                     }
                 )
-                    .then(() => res.json())
+                    .then(() => res.json(response.data))
                     .catch((err) => res.status(400).json(err));
             })
             .catch((err) => res.status(400).json(err));

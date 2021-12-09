@@ -1,6 +1,18 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { Button, Label, Input, Form, FormGroup, Spinner } from "reactstrap";
+import {
+    Button,
+    Label,
+    Input,
+    Form,
+    FormGroup,
+    Spinner,
+    Row,
+    Col,
+    Card,
+    CardSubtitle,
+    CardText,
+} from "reactstrap";
 
 import api from "../../api";
 
@@ -97,6 +109,7 @@ const EditPanel = () => {
                 output,
             });
             if (res.status === 200) {
+                setTestcases([...testcases, { input, output, id: res.data.number }]);
                 setInput("");
                 setOutput("");
             } else {
@@ -151,6 +164,30 @@ const EditPanel = () => {
             ) : (
                 <></>
             )}
+            <div className="testcases">
+                {testcases.map((testcase, idx) => (
+                    <div className="testcase" key={idx}>
+                        <Row className="testcase-row">
+                            <Col sm="6">
+                                <Card body>
+                                    <CardSubtitle>
+                                        <strong>Input</strong>
+                                    </CardSubtitle>
+                                    <CardText>{testcase.input}</CardText>
+                                </Card>
+                            </Col>
+                            <Col sm="6">
+                                <Card body>
+                                    <CardSubtitle>
+                                        <strong>Output</strong>
+                                    </CardSubtitle>
+                                    <CardText>{testcase.output}</CardText>
+                                </Card>
+                            </Col>
+                        </Row>
+                    </div>
+                ))}
+            </div>
             <div className="add-testcase">
                 <Form onSubmit={handleTestCaseSubmit} inline>
                     <FormGroup>
