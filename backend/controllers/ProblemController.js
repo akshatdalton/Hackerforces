@@ -119,4 +119,17 @@ module.exports = {
             })
             .catch((err) => res.status(500).json(err));
     },
+
+    deleteProblem(req, res) {
+        axios
+            .delete(
+                `${process.env.PROBLEM_API}/problems/${req.params.id}?access_token=${process.env.PROBLEM_ACCESS_TOKEN}`
+            )
+            .then(() => {
+                Problem.deleteOne({ id: req.params.id })
+                    .then(() => res.json())
+                    .catch((err) => res.json(500).json(err));
+            })
+            .catch((err) => res.status(500).json(err));
+    },
 };

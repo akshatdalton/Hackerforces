@@ -43,6 +43,7 @@ const Student = () => {
                     id={problem.id}
                     name={problem.name}
                     code={problem.code}
+                    isAdmin={false}
                 />
             ))}
         </div>
