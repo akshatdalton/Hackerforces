@@ -8,17 +8,15 @@ import "./editpanel.css";
 
 const EditPanel = () => {
     const { id } = useParams();
-    const [problem, setProblem] = useState({
-        name: "",
-        body: "",
-        code: "",
-        testcases: [],
-    });
     const [name, setName] = useState("");
     const [body, setBody] = useState("");
-    const [testcases, setTestcases] = useState([{ input: "", output: "" }]);
+    const [testcases, setTestcases] = useState([
+        { input: "", output: "", id: "" },
+    ]);
     const [isProblemUpdated, setIsProblemUpdate] = useState(true);
     const [problemUpdateStatus, setProblemUpdateStatus] = useState("");
+    const [input, setInput] = useState("");
+    const [output, setOutput] = useState("");
 
     useEffect(() => {
         getProblem(id);
@@ -26,13 +24,18 @@ const EditPanel = () => {
     }, 9999);
 
     const getTestCases = async (id) => {
+        // TODO: Add update and delete operation for test cases.
         try {
             const res = await api.get("/api/problem/" + id + "/testcases");
             if (res.status === 200) {
-                const { input, output } = res.data;
+                const { input, output, test_case_ids } = res.data;
                 const test_cases = [];
                 for (let idx = 0; idx < input.length; ++idx) {
-                    test_cases.push({ input: input[idx], output: output[idx] });
+                    test_cases.push({
+                        input: input[idx],
+                        output: output[idx],
+                        id: test_case_ids[idx],
+                    });
                 }
                 setTestcases([...test_cases]);
             } else {
@@ -51,7 +54,6 @@ const EditPanel = () => {
             const res = await api.get("/api/problem/" + id);
             if (res.status === 200) {
                 const { name, body, code, testcases } = res.data;
-                setProblem({ name, body, code, testcases });
                 setName(name);
                 setBody(body);
             } else {
@@ -65,7 +67,7 @@ const EditPanel = () => {
         }
     };
 
-    const handleSubmit = async (e) => {
+    const handleProblemSubmit = async (e) => {
         e.preventDefault();
         setIsProblemUpdate(false);
         try {
@@ -87,10 +89,28 @@ const EditPanel = () => {
         setIsProblemUpdate(true);
     };
 
+    const handleTestCaseSubmit = async (e) => {
+        e.preventDefault();
+        try {
+            const res = await api.post("/api/problem/" + id + "/testcases", {
+                input,
+                output,
+            });
+            if (res.status === 200) {
+                setInput("");
+                setOutput("");
+            } else {
+                console.error(`Error: ${res.status}`);
+            }
+        } catch (err) {
+            console.error(`Error: ${err}`);
+        }
+    };
+
     return (
         <>
             <div className="edit-problem">
-                <Form onSubmit={handleSubmit}>
+                <Form onSubmit={handleProblemSubmit}>
                     <FormGroup>
                         <Label for="name">Name</Label>{" "}
                         <Input
@@ -131,6 +151,33 @@ const EditPanel = () => {
             ) : (
                 <></>
             )}
+            <div className="add-testcase">
+                <Form onSubmit={handleTestCaseSubmit} inline>
+                    <FormGroup>
+                        <Label for="input">Input</Label>
+                        <Input
+                            name="input"
+                            value={input}
+                            id="input"
+                            type="text"
+                            onChange={(e) => setInput(e.target.value)}
+                        />
+                    </FormGroup>{" "}
+                    <FormGroup>
+                        <Label for="output">Output</Label>{" "}
+                        <Input
+                            name="output"
+                            value={output}
+                            id="output"
+                            type="text"
+                            onChange={(e) => setOutput(e.target.value)}
+                        />
+                    </FormGroup>{" "}
+                    <Button className="save-btn" color="success" type="submit">
+                        Add Test Case
+                    </Button>
+                </Form>
+            </div>
         </>
     );
 };

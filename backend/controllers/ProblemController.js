@@ -59,9 +59,11 @@ module.exports = {
             .then((problem) => {
                 const input = [];
                 const output = [];
+                const test_case_ids = [];
                 const input_promises = [];
                 const output_promises = [];
                 for (const testcase of problem.testcases) {
+                    test_case_ids.push(testcase.number);
                     input_promises.push(
                         axios
                             .get(
@@ -82,7 +84,7 @@ module.exports = {
                 }
                 Promise.all(input_promises).then(() => {
                     Promise.all(output_promises).then(() => {
-                        return res.json({ input, output });
+                        return res.json({ input, output, test_case_ids });
                     });
                 });
             })
@@ -146,6 +148,29 @@ module.exports = {
                 Problem.updateOne(
                     { id: req.body.id },
                     { name: req.body.name, body: req.body.body }
+                )
+                    .then(() => res.json())
+                    .catch((err) => res.status(400).json(err));
+            })
+            .catch((err) => res.status(400).json(err));
+    },
+
+    createTestCase(req, res) {
+        axios
+            .post(
+                `${process.env.PROBLEM_API}/problems/${req.params.id}/testcases?access_token=${process.env.PROBLEM_ACCESS_TOKEN}`,
+                {
+                    input: req.body.input,
+                    output: req.body.output,
+                    judgeId: 1,
+                }
+            )
+            .then((response) => {
+                Problem.findOneAndUpdate(
+                    { id: req.params.id },
+                    {
+                        $push: { testcases: response.data },
+                    }
                 )
                     .then(() => res.json())
                     .catch((err) => res.status(400).json(err));
