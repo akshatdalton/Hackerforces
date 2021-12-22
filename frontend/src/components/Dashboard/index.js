@@ -42,6 +42,7 @@ const Dashboard = () => {
                 setStudentPassword("");
                 localStorage.setItem("token", res.data.token);
                 localStorage.setItem("user_id", res.data.user.id);
+                window.location = "/student";
             } else {
                 console.error(`Error: ${res.status}`);
             }
@@ -64,6 +65,7 @@ const Dashboard = () => {
                 setStudentLoginPassword("");
                 localStorage.setItem("token", res.data.token);
                 localStorage.setItem("user_id", res.data.user.id);
+                window.location = "/student";
             } else {
                 console.error(`Error: ${res.status}`);
             }
@@ -86,6 +88,7 @@ const Dashboard = () => {
                 setAdminPassword("");
                 localStorage.setItem("token", res.data.token);
                 localStorage.setItem("user_id", res.data.user.id);
+                window.location = "/admin";
             } else {
                 console.error(`Error: ${res.status}`);
             }
@@ -108,6 +111,7 @@ const Dashboard = () => {
                 setAdminLoginPassword("");
                 localStorage.setItem("token", res.data.token);
                 localStorage.setItem("user_id", res.data.user.id);
+                window.location = "/admin";
             } else {
                 console.error(`Error: ${res.status}`);
             }
