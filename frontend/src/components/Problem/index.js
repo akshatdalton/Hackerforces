@@ -144,7 +144,7 @@ const Problem = () => {
                             onChange={(e) => setSourceCode(e.target.value)}
                         ></Input>
                     </FormGroup>
-                    <Button type="submit">Submit</Button>
+                    <Button color="success" type="submit">Submit</Button>
                     <span className="result">{result}</span>
                 </Form>
             </div>

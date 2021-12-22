@@ -33,9 +33,9 @@ const ProblemCard = ({ id, name, code, isAdmin }) => {
                         {code}
                     </CardSubtitle>
                     {!isAdmin ? (
-                        <Button href={"problems/" + id}>Open</Button>
+                        <Button color="success" href={"problems/" + id}>Open</Button>
                     ) : (
-                        <Button href={"edit-problem/" + id}>Open</Button>
+                        <Button color="success" href={"edit-problem/" + id}>Open</Button>
                     )}
                     {isAdmin ? (
                         <Button
