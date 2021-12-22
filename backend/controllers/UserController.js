@@ -37,28 +37,32 @@ module.exports = {
         const { email, password, isAdmin } = req.body;
 
         // Check if the user exists.
-        User.findOne({ email, isAdmin }).then((user) => {
-            if (!user)
-                return res.status(400).json({ msg: "User doesn't exist" });
+        User.findOne({ email, isAdmin })
+            .then((user) => {
+                if (!user)
+                    return res.status(400).json({ msg: "User doesn't exist" });
 
-            // Validate password
-            bcrypt.compare(password, user.password).then((isMatch) => {
-                if (!isMatch)
-                    return res.status(400).json({ msg: "Invalid credentials" });
+                // Validate password
+                bcrypt.compare(password, user.password).then((isMatch) => {
+                    if (!isMatch)
+                        return res
+                            .status(400)
+                            .json({ msg: "Invalid credentials" });
 
-                jwt.sign(
-                    { id: user.id },
-                    process.env.jwtSecret,
-                    { expiresIn: 3600 },
-                    (err, token) => {
-                        if (err) throw err;
-                        return res.json({
-                            token,
-                            user: { id: user.id, email: user.email },
-                        });
-                    }
-                );
-            });
-        });
+                    jwt.sign(
+                        { id: user.id },
+                        process.env.jwtSecret,
+                        { expiresIn: 3600 },
+                        (err, token) => {
+                            if (err) throw err;
+                            return res.json({
+                                token,
+                                user: { id: user.id, email: user.email },
+                            });
+                        }
+                    );
+                });
+            })
+            .catch((err) => res.status(400).json(err));
     },
 };
