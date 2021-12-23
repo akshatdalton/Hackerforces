@@ -3,9 +3,10 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 const path = require("path");
 
-require("dotenv").config();
-
+const config = require("config");
 const routes = require("./routes");
+
+const { MONGO_DB_SECRET } = config;
 
 const app = express();
 
@@ -14,7 +15,7 @@ app.use(express.json());
 
 // Connect to Mongo
 mongoose
-    .connect(process.env.MONGO_DB_SECRET, {
+    .connect(MONGO_DB_SECRET, {
         useNewUrlParser: true,
         useUnifiedTopology: true,
     })
@@ -30,12 +31,10 @@ app.use(routes);
 // Serve static assets if in production
 if (process.env.NODE_ENV === "production") {
     // Set static folder
-    app.use(express.static("../frontend/build"));
+    app.use(express.static("client/build"));
 
     app.get("*", (req, res) => {
-        res.sendFile(
-            path.resolve(__dirname, "..", "frontend", "build", "index.html")
-        );
+        res.sendFile(path.resolve(__dirname, "client", "build", "index.html"));
     });
 }
 

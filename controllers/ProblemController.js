@@ -1,6 +1,9 @@
 const axios = require("axios");
 
 const Problem = require("../models/Problem");
+const config = require("config");
+
+const { PROBLEM_API, PROBLEM_ACCESS_TOKEN } = config;
 
 module.exports = {
     getProblems(req, res) {
@@ -18,7 +21,7 @@ module.exports = {
     createProblem(req, res) {
         axios
             .post(
-                `${process.env.PROBLEM_API}/problems?access_token=${process.env.PROBLEM_ACCESS_TOKEN}`,
+                `${PROBLEM_API}/problems?access_token=${PROBLEM_ACCESS_TOKEN}`,
                 {
                     name: req.body.name,
                     body: req.body.body,
@@ -29,7 +32,7 @@ module.exports = {
                 const problem_id = response.data.id;
                 axios
                     .get(
-                        `${process.env.PROBLEM_API}/problems/${problem_id}?access_token=${process.env.PROBLEM_ACCESS_TOKEN}`
+                        `${PROBLEM_API}/problems/${problem_id}?access_token=${PROBLEM_ACCESS_TOKEN}`
                     )
                     .then((response) => {
                         const { name, body, code, testcases, id } =
@@ -67,7 +70,7 @@ module.exports = {
                     input_promises.push(
                         axios
                             .get(
-                                `${process.env.PROBLEM_API}/problems/${id}/testcases/${testcase.number}/input?access_token=${process.env.PROBLEM_ACCESS_TOKEN}`
+                                `${PROBLEM_API}/problems/${id}/testcases/${testcase.number}/input?access_token=${PROBLEM_ACCESS_TOKEN}`
                             )
                             .then((response) => input.push(response.data))
                             .catch((err) => res.status(500).json(err))
@@ -76,7 +79,7 @@ module.exports = {
                     output_promises.push(
                         axios
                             .get(
-                                `${process.env.PROBLEM_API}/problems/${id}/testcases/${testcase.number}/output?access_token=${process.env.PROBLEM_ACCESS_TOKEN}`
+                                `${PROBLEM_API}/problems/${id}/testcases/${testcase.number}/output?access_token=${PROBLEM_ACCESS_TOKEN}`
                             )
                             .then((response) => output.push(response.data))
                             .catch((err) => res.status(500).json(err))
@@ -94,7 +97,7 @@ module.exports = {
     createSubmission(req, res) {
         axios
             .post(
-                `${process.env.PROBLEM_API}/submissions?access_token=${process.env.PROBLEM_ACCESS_TOKEN}`,
+                `${PROBLEM_API}/submissions?access_token=${PROBLEM_ACCESS_TOKEN}`,
                 {
                     problemId: req.body.id,
                     source: req.body.source,
@@ -106,7 +109,7 @@ module.exports = {
                 const checkSubmission = () => {
                     axios
                         .get(
-                            `${process.env.PROBLEM_API}/submissions/${submission_id}?access_token=${process.env.PROBLEM_ACCESS_TOKEN}`
+                            `${PROBLEM_API}/submissions/${submission_id}?access_token=${PROBLEM_ACCESS_TOKEN}`
                         )
                         .then((response) => {
                             if (response.data.executing) {
@@ -125,7 +128,7 @@ module.exports = {
     deleteProblem(req, res) {
         axios
             .delete(
-                `${process.env.PROBLEM_API}/problems/${req.params.id}?access_token=${process.env.PROBLEM_ACCESS_TOKEN}`
+                `${PROBLEM_API}/problems/${req.params.id}?access_token=${PROBLEM_ACCESS_TOKEN}`
             )
             .then(() => {
                 Problem.deleteOne({ id: req.params.id })
@@ -138,7 +141,7 @@ module.exports = {
     updateProblem(req, res) {
         axios
             .put(
-                `${process.env.PROBLEM_API}/problems/${req.body.id}?access_token=${process.env.PROBLEM_ACCESS_TOKEN}`,
+                `${PROBLEM_API}/problems/${req.body.id}?access_token=${PROBLEM_ACCESS_TOKEN}`,
                 {
                     name: req.body.name,
                     body: req.body.body,
@@ -158,7 +161,7 @@ module.exports = {
     createTestCase(req, res) {
         axios
             .post(
-                `${process.env.PROBLEM_API}/problems/${req.params.id}/testcases?access_token=${process.env.PROBLEM_ACCESS_TOKEN}`,
+                `${PROBLEM_API}/problems/${req.params.id}/testcases?access_token=${PROBLEM_ACCESS_TOKEN}`,
                 {
                     input: req.body.input,
                     output: req.body.output,
