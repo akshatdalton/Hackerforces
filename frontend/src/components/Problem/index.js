@@ -37,7 +37,7 @@ const Problem = () => {
     useEffect(() => {
         getProblem(id);
         getTestCases(id);
-    }, 9999);
+    }, [id]);
 
     const getTestCases = async (id) => {
         try {

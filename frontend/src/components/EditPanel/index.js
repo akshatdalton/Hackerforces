@@ -33,7 +33,7 @@ const EditPanel = () => {
     useEffect(() => {
         getProblem(id);
         getTestCases(id);
-    }, 9999);
+    }, [id]);
 
     const getTestCases = async (id) => {
         // TODO: Add update and delete operation for test cases.
@@ -65,7 +65,7 @@ const EditPanel = () => {
         try {
             const res = await api.get("/api/problem/" + id);
             if (res.status === 200) {
-                const { name, body, code, testcases } = res.data;
+                const { name, body } = res.data;
                 setName(name);
                 setBody(body);
             } else {
@@ -109,7 +109,10 @@ const EditPanel = () => {
                 output,
             });
             if (res.status === 200) {
-                setTestcases([...testcases, { input, output, id: res.data.number }]);
+                setTestcases([
+                    ...testcases,
+                    { input, output, id: res.data.number },
+                ]);
                 setInput("");
                 setOutput("");
             } else {
