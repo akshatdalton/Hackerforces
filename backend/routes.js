@@ -11,8 +11,16 @@ router.post("/api/problems", verifyToken, ProblemController.createProblem);
 router.get("/api/problem/:id", verifyToken, ProblemController.getProblem);
 router.delete("/api/problem/:id", verifyToken, ProblemController.deleteProblem);
 router.put("/api/problem", verifyToken, ProblemController.updateProblem);
-router.get("/api/problem/:id/testcases", verifyToken, ProblemController.getTestCases);
-router.post("/api/problem/:id/testcases", verifyToken, ProblemController.createTestCase);
+router.get(
+    "/api/problem/:id/testcases",
+    verifyToken,
+    ProblemController.getTestCases
+);
+router.post(
+    "/api/problem/:id/testcases",
+    verifyToken,
+    ProblemController.createTestCase
+);
 router.post("/api/submission", verifyToken, ProblemController.createSubmission);
 
 // Handle everything related to User.
