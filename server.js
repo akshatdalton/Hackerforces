@@ -12,8 +12,8 @@ const app = express();
 
 // ExpressJS Middleware
 app.use(express.json());
-console.log("MONGO = ", MONGO_DB_SECRET);
 console.log("process = ", process);
+console.log("MONGO = ", MONGO_DB_SECRET);
 // Connect to Mongo
 mongoose
     .connect(process.env.MONGO_DB_SECRET, {
