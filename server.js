@@ -14,6 +14,7 @@ const app = express();
 app.use(express.json());
 console.log("process = ", process);
 console.log("MONGO = ", MONGO_DB_SECRET);
+console.log("node env = ", process.env.NODE_ENV);
 // Connect to Mongo
 mongoose
     .connect(process.env.MONGO_DB_SECRET, {
